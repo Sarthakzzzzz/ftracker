@@ -1,12 +1,11 @@
 "use client";
 
 import { canAccessPath } from "@/lib/rbac";
-import { getCurrentRole, isAuthenticated } from "@/lib/auth";
+import { useCurrentRole, useIsAuthenticated } from "@/lib/auth";
 import AppHeader from "@/layout/AppHeader";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { UserRole } from "@/types/finance";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 export default function AdminLayout({
   children,
@@ -15,36 +14,17 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [ready, setReady] = useState(false);
-  const [role, setRole] = useState<UserRole | null>(null);
-  const [guestDashboard, setGuestDashboard] = useState(false);
+  const isAuthed = useIsAuthenticated();
+  const role = useCurrentRole();
+  const guestDashboard = pathname === "/dashboard" && !isAuthed;
 
   useEffect(() => {
-    if (pathname === "/dashboard" && !isAuthenticated()) {
-      setGuestDashboard(true);
-      setReady(true);
-      return;
-    }
-
-    if (!isAuthenticated()) {
+    if (!isAuthed && pathname !== "/dashboard") {
       router.replace("/signin?next=/dashboard");
-      return;
     }
+  }, [isAuthed, pathname, router]);
 
-    setGuestDashboard(false);
-    setRole(getCurrentRole());
-    setReady(true);
-  }, [pathname, router]);
-
-  const hasAccess = guestDashboard || (ready && canAccessPath(role, pathname));
-
-  if (!ready && !guestDashboard) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-600 dark:bg-gray-900 dark:text-gray-300">
-        Checking session...
-      </div>
-    );
-  }
+  const hasAccess = isAuthed && canAccessPath(role, pathname);
 
   if (guestDashboard) {
     return (
@@ -124,6 +104,14 @@ export default function AdminLayout({
             </div>
           </main>
         </div>
+      </div>
+    );
+  }
+
+  if (!isAuthed) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-600 dark:bg-gray-900 dark:text-gray-300">
+        Checking session...
       </div>
     );
   }
