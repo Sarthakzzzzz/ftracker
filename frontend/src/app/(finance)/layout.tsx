@@ -20,22 +20,20 @@ export default function AdminLayout({
   const [guestDashboard, setGuestDashboard] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      if (pathname === "/dashboard") {
-        setGuestDashboard(true);
-        setReady(true);
-        return;
-      }
+    if (pathname === "/dashboard" && !isAuthenticated()) {
+      setGuestDashboard(true);
+      setReady(true);
+      return;
+    }
 
+    if (!isAuthenticated()) {
       router.replace("/signin?next=/dashboard");
       return;
     }
 
     setGuestDashboard(false);
-    queueMicrotask(() => {
-      setRole(getCurrentRole());
-      setReady(true);
-    });
+    setRole(getCurrentRole());
+    setReady(true);
   }, [pathname, router]);
 
   const hasAccess = guestDashboard || (ready && canAccessPath(role, pathname));
