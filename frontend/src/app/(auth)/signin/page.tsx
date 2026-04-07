@@ -1,5 +1,6 @@
 import SignInForm from "@/components/auth/SignInForm";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Sign In | Finance Dashboard",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function SignIn() {
-  return <SignInForm />;
+  return (
+    <Suspense fallback={null}>
+      <SignInForm />
+    </Suspense>
+  );
 }

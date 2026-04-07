@@ -14,7 +14,7 @@ import {
   TransactionPublic,
   TransactionType,
 } from "@/types/finance";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 function toCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -64,7 +64,7 @@ export default function TransactionsPage() {
     date: new Date().toISOString().slice(0, 10),
   });
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -95,11 +95,11 @@ export default function TransactionsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [typeFilter, categoryFilter, startDate, endDate]);
 
   useEffect(() => {
     loadData();
-  }, [typeFilter, categoryFilter, startDate, endDate]);
+  }, [loadData]);
 
   const categoryMap = useMemo(() => {
     return new Map(categories.map((category) => [category.id, category]));

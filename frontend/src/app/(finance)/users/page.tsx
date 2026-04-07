@@ -10,7 +10,7 @@ import {
 } from "@/lib/api";
 import { getCurrentRole } from "@/lib/auth";
 import { UserPublic, UserRole, UserStatus } from "@/types/finance";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type UserFormState = {
   email: string;
@@ -48,7 +48,7 @@ export default function UsersPage() {
 
   const [form, setForm] = useState<UserFormState>(DEFAULT_FORM);
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     if (!canManage) {
       setError("You do not have permission to access user management.");
       setLoading(false);
@@ -73,11 +73,11 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [canManage]);
 
   useEffect(() => {
     loadData();
-  }, [canManage]);
+  }, [loadData]);
 
   const visibleUsers = useMemo(() => {
     return users.filter((user) => {
