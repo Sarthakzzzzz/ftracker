@@ -4,6 +4,12 @@ FTracker is a full-stack finance dashboard project built to demonstrate backend 
 
 The backend is implemented with FastAPI, SQLModel, PostgreSQL, and Alembic. The frontend is a Next.js dashboard customized for this project with a public landing page, authenticated dashboard, and role-aware navigation.
 
+## Live Links
+
+- **Frontend Application**: [https://ftracker-two.vercel.app/](https://ftracker-two.vercel.app/)
+- **Backend API Docs (Swagger)**: [https://ftracker-backend-ay47.onrender.com/docs](https://ftracker-backend-ay47.onrender.com/docs)
+- **Backend API Base**: `https://ftracker-backend-ay47.onrender.com/api/v1`
+
 ## What This Project Covers
 
 - User and role management
