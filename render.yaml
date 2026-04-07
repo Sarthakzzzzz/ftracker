@@ -1,7 +1,7 @@
 databases:
   - name: ftracker-db
     databaseName: finance_dashboard
-    user: postgres
+    user: ftracker_user
     plan: free
 
 services:
