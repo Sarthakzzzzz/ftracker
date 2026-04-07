@@ -23,9 +23,9 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: FRONTEND_HOST
-        value: "https://ftracker-frontend.vercel.app" # Please update this after Vercel deployment
+        value: "https://ftracker-two.vercel.app"
       - key: BACKEND_CORS_ORIGINS
-        value: "https://ftracker-frontend.vercel.app" # Please update this after Vercel deployment
+        value: "https://ftracker-two.vercel.app"
       - key: FIRST_SUPERUSER_EMAIL
         value: "admin@example.com"
       - key: FIRST_SUPERUSER_PASSWORD
