@@ -2,7 +2,7 @@ import secrets
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import AnyUrl, BeforeValidator, HttpUrl, computed_field
+from pydantic import AnyUrl, BeforeValidator, HttpUrl, computed_field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -35,6 +35,13 @@ class Settings(BaseSettings):
     DATABASE_URL: str = (
         "postgresql+psycopg://postgres:postgres@localhost:5432/finance_dashboard"
     )
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def fix_database_url(cls, v: str | None) -> str | None:
+        if isinstance(v, str) and v.startswith("postgresql://"):
+            return v.replace("postgresql://", "postgresql+psycopg://", 1)
+        return v
 
     FIRST_SUPERUSER_EMAIL: str = "admin@example.com"
     FIRST_SUPERUSER_PASSWORD: str = "adminadmin"
