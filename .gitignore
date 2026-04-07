@@ -1,0 +1,42 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Alembic / build artifacts
+*.sqlite3
+*.db
+.pyright/
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/.turbo/
+frontend/.vercel/
+frontend/.eslintcache
+*.tsbuildinfo
+
+# OS / editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Generated / local docs and cache
+dist/
+build/
+coverage/
