@@ -176,7 +176,44 @@ Frontend:
 
 ## Deployment
 
-The easiest deployment path is Docker Compose:
+You can deploy the two apps separately:
+
+### Frontend on Vercel
+
+1. Import the repository into Vercel.
+2. Set the project root to `frontend/`.
+3. Add this environment variable:
+
+```bash
+NEXT_PUBLIC_API_BASE_URL=https://<your-render-backend-url>/api/v1
+```
+
+4. Deploy the project.
+
+### Backend on Render
+
+1. Create a new Render Web Service.
+2. Point it at this repository and use the root-level `backend/Dockerfile`.
+3. Add the required environment variables:
+
+```bash
+ENVIRONMENT=production
+DATABASE_URL=postgresql+psycopg://<user>:<password>@<host>:5432/<database>
+SECRET_KEY=<strong-random-secret>
+FRONTEND_HOST=https://<your-vercel-frontend-url>
+BACKEND_CORS_ORIGINS=https://<your-vercel-frontend-url>
+FIRST_SUPERUSER_EMAIL=admin@example.com
+FIRST_SUPERUSER_PASSWORD=adminadmin
+```
+
+4. Make sure your Render Postgres database is created and the `DATABASE_URL` points to it.
+5. Deploy the service.
+
+The backend container runs Alembic automatically on startup, so schema and seed data are applied inside the container.
+
+### Local Docker deployment
+
+If you want to test the full stack locally with Docker:
 
 ```bash
 docker compose up --build
@@ -187,8 +224,6 @@ This starts:
 - PostgreSQL
 - FastAPI backend on `http://localhost:8000`
 - Next.js frontend on `http://localhost:3000`
-
-The backend container runs Alembic automatically on startup, so schema and seed data are applied inside the container.
 
 ## Routes
 
@@ -236,5 +271,4 @@ If you want to change the default admin credentials, update the root `.env` valu
 - Production deployments should set `ENVIRONMENT=production`.
 - If you are deploying outside Docker, run Alembic before starting the backend.
 - The frontend is configured to read the backend URL from `NEXT_PUBLIC_API_BASE_URL`.
-
 
